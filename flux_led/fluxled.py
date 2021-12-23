@@ -44,12 +44,12 @@ from optparse import OptionGroup, OptionParser, Values
 import sys
 from typing import Any, List, Optional, Tuple
 
-from .device import WifiLedBulb
-from .pattern import PresetPattern
-from .scanner import BulbScanner, FluxLEDDiscovery
-from .timer import LedTimer
-from .utils import utils
-from .const import ATTR_IPADDR, ATTR_ID
+from flux_led.device import WifiLedBulb
+from flux_led.pattern import PresetPattern
+from flux_led.scanner import BulbScanner, FluxLEDDiscovery
+from flux_led.timer import LedTimer
+from flux_led.utils import utils
+from flux_led.const import ATTR_IPADDR, ATTR_ID
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -849,5 +849,6 @@ def main() -> None:  # noqa: C901
     sys.exit(0)
 
 
+# Run in main folder as python -m flux_led.fluxled [args]
 if __name__ == "__main__":
     main()
