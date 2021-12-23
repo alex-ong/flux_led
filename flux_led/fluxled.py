@@ -314,8 +314,8 @@ def processSetTimerArgs(parser: OptionParser, args: Any) -> LedTimer:  # noqa: C
             speed = settings_dict["speed"]
             if not speed.isdigit() or int(speed) > 100:
                 parser.error("preset speed must be a percentage (0-100)")
-            if not code.isdigit() or not PresetPattern.valid(int(code)):
-                parser.error("preset code must be in valid range")
+            if not code.isdigit():
+                parser.error("preset code must be a valid integer")
             timer.setModePresetPattern(int(code), int(speed))
 
         if mode == "warmwhite":
@@ -607,12 +607,7 @@ def parseArgs() -> Tuple[Values, Any]:  # noqa: C901
         showTimerHelp()
         sys.exit(0)
 
-    if options.listpresets:
-        for c in range(
-            PresetPattern.seven_color_cross_fade, PresetPattern.seven_color_jumping + 1
-        ):
-            print(f"{c:2} {PresetPattern.valtostr(c)}")
-        sys.exit(0)
+    
 
     if options.listcolors:
         for c in utils.get_color_names_list():  # type: ignore
@@ -655,10 +650,6 @@ def parseArgs() -> Tuple[Values, Any]:  # noqa: C901
         if options.color is None:
             parser.error("bad color specification")
 
-    if options.preset:
-        if not PresetPattern.valid(options.preset[0]):
-            parser.error("Preset code is not in range")
-
     # asking for timer info, implicitly gets the state
     if options.showtimers:
         options.info = True
@@ -683,7 +674,7 @@ def parseArgs() -> Tuple[Values, Any]:  # noqa: C901
         parser.error("An operation must be specified")
 
     # if we're not scanning, IP addresses must be specified as positional args
-    if not options.scan and not options.scanresults and not options.listpresets:
+    if not options.scan and not options.scanresults:
         if len(args) == 0:
             parser.error(
                 "You must specify at least one IP address as an argument, or use scan results"
@@ -851,6 +842,9 @@ def main() -> None:  # noqa: C901
                 num += 1
                 print(f"  Timer #{num}: {t}")
             print("")
+
+        if options.listpresets:
+            print (bulb.effect_dict)
 
     sys.exit(0)
 

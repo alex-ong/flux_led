@@ -186,7 +186,7 @@ class LEDENETDevice:
         self._mode: Optional[str] = None
         self._transition_complete_time: float = 0
         self._last_effect_brightness: int = 100
-
+        print("hi?")
     def _protocol_probes(
         self,
     ) -> Union[
@@ -392,6 +392,22 @@ class LEDENETDevice:
     def warm_white(self) -> int:
         assert self.raw_state is not None
         return self.raw_state.warm_white if self._rgbwwprotocol else 0
+
+    @property
+    def effect_dict(self):
+        """Return list of effect names and ids"""
+        protocol = self.protocol
+        if protocol in OLD_EFFECTS_PROTOCOLS:
+            return ORIGINAL_ADDRESSABLE_EFFECT_ID_NAME
+        elif protocol in NEW_EFFECTS_PROTOCOLS:
+            return ADDRESSABLE_EFFECT_ID_NAME.values()
+        elif protocol in CHRISTMAS_EFFECTS_PROTOCOLS:
+            return CHRISTMAS_ADDRESSABLE_EFFECT_ID_NAME.values()    
+        elif COLOR_MODES_RGB.intersection(self.color_modes):
+            effects = EFFECT_LIST if self.requires_turn_on else EFFECT_LIST_AUTO_ON
+        if self.microphone:
+            return [*effects, EFFECT_RANDOM, EFFECT_MUSIC]
+        return None
 
     @property
     def effect_list(self) -> List[str]:
@@ -952,6 +968,7 @@ class LEDENETDevice:
         version_num = full_msg[10] if len(full_msg) > 10 else 1
         self.setProtocol(self._model_data.protocol_for_version_num(version_num))
 
+   
     def _generate_preset_pattern(
         self, pattern: int, speed: int, brightness: int
     ) -> bytearray:
