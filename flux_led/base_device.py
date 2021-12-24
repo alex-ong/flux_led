@@ -186,7 +186,7 @@ class LEDENETDevice:
         self._mode: Optional[str] = None
         self._transition_complete_time: float = 0
         self._last_effect_brightness: int = 100
-        print("hi?")
+        
     def _protocol_probes(
         self,
     ) -> Union[

@@ -527,6 +527,15 @@ def parseArgs() -> Tuple[Values, Any]:  # noqa: C901
         + "TYPE should be jump, gradual, or strobe. SPEED is percent. "
         + "COLORLIST is a space-separated list of color names, web hex values, or comma-separated RGB triples",
     )
+    mode_group.add_option(
+        "-r",
+        "--raw",
+        dest="raw_packet",
+        default=None,
+        help="Send raw byte packet formatted as hex string",
+        metavar="HEX",
+        nargs=1
+    )
     parser.add_option_group(mode_group)
 
     parser.add_option(
@@ -634,6 +643,9 @@ def parseArgs() -> Tuple[Values, Any]:  # noqa: C901
         mode_count += 1
     if options.custom:
         mode_count += 1
+    if options.raw_packet:
+        mode_count += 1
+
     if mode_count > 1:
         parser.error(
             "options --color, --*white, --preset, --CCT, and --custom are mutually exclusive"
@@ -812,6 +824,12 @@ def main() -> None:  # noqa: C901
                 )
             )
             bulb.setPresetPattern(options.preset[0], options.preset[1])
+        elif options.raw_packet is not None:
+            print(
+                "Sending raw packet:", options.raw_packet
+            )
+            byte_data = bytearray.fromhex(options.raw_packet)
+            bulb._process_levels_change(byte_data, None)
 
         if options.on:
             print(f"Turning on bulb at {bulb.ipaddr}")
