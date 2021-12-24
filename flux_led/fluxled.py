@@ -702,8 +702,7 @@ def main() -> None:  # noqa: C901
             for b in bulb_info_list:
                 print("  {} {}".format(b["id"], b["ipaddr"]))
             sys.exit(0)
-
-    elif options.info:
+    else:
         for addr in args:
             scanner.scan(timeout=6, address=addr)
         bulb_info_list = scanner.getBulbInfo()
