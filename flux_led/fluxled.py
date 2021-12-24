@@ -828,6 +828,7 @@ def main() -> None:  # noqa: C901
             print(
                 "Sending raw packet:", options.raw_packet
             )
+            bulb.turnOn()
             byte_data = bytearray.fromhex(options.raw_packet)
             bulb._process_levels_change(byte_data, None)
 
