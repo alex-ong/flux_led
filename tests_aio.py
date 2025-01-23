@@ -91,9 +91,10 @@ async def mock_discovery_aio_protocol():
             future.set_result((transport, protocol))
         return transport, protocol
 
-    with patch.object(
-        loop, "create_datagram_endpoint", _mock_create_datagram_endpoint
-    ), patch.object(aioscanner, "MESSAGE_SEND_INTERLEAVE_DELAY", 0):
+    with (
+        patch.object(loop, "create_datagram_endpoint", _mock_create_datagram_endpoint),
+        patch.object(aioscanner, "MESSAGE_SEND_INTERLEAVE_DELAY", 0),
+    ):
         yield _wait_for_connection
 
 
@@ -180,7 +181,7 @@ async def test_cannot_determine_strip_type(mock_aio_protocol):
     await mock_aio_protocol()
     # protocol state
     light._aio_protocol.data_received(
-        b"\x81\xA3#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd5"
+        b"\x81\xa3#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd5"
     )
     with pytest.raises(RuntimeError):
         await task
@@ -296,9 +297,7 @@ async def test_extract_from_outer_message_and_reassemble(mock_aio_protocol):
 
     task = asyncio.create_task(light.async_setup(_updated_callback))
     await mock_aio_protocol()
-    for (
-        byte
-    ) in b"\xb0\xb1\xb2\xb3\x00\x01\x01\x81\x00\x0e\x81\x1a\x23\x61\x07\x00\xff\x00\x00\x00\x01\x00\x06\x2c\xaf":
+    for byte in b"\xb0\xb1\xb2\xb3\x00\x01\x01\x81\x00\x0e\x81\x1a\x23\x61\x07\x00\xff\x00\x00\x00\x01\x00\x06\x2c\xaf":
         light._aio_protocol.data_received(bytearray([byte]))
     await task
     assert light.color_modes == {COLOR_MODE_RGB}
@@ -400,7 +399,7 @@ async def test_turn_on_off_via_power_state_message(
     # Wait for the future to get added
     await asyncio.sleep(0)
     light._ignore_next_power_state_update = False
-    light._aio_protocol.data_received(b"\x0F\x71\x24\xA4")
+    light._aio_protocol.data_received(b"\x0f\x71\x24\xa4")
     await asyncio.sleep(0)
     assert light.is_on is False
     await task
@@ -408,7 +407,7 @@ async def test_turn_on_off_via_power_state_message(
     task = asyncio.create_task(light.async_turn_on())
     await asyncio.sleep(0)
     light._ignore_next_power_state_update = False
-    light._aio_protocol.data_received(b"\x0F\x71\x23\xA3")
+    light._aio_protocol.data_received(b"\x0f\x71\x23\xa3")
     await asyncio.sleep(0)
     assert light.is_on is True
     await task
@@ -428,10 +427,10 @@ async def test_turn_on_off_via_assessable_state_message(
     await mock_aio_protocol()
     # protocol state
     light._aio_protocol.data_received(
-        b"\x81\xA3#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd5"
+        b"\x81\xa3#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd5"
     )
     # ic sorting
-    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xA0")
+    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xa0")
     await task
 
     task = asyncio.create_task(light.async_turn_off())
@@ -439,7 +438,7 @@ async def test_turn_on_off_via_assessable_state_message(
     await asyncio.sleep(0)
     light._ignore_next_power_state_update = False
     light._aio_protocol.data_received(
-        b"\xB0\xB1\xB2\xB3\x00\x01\x01\x23\x00\x0E\x81\xA3\x24\x25\xFF\x47\x64\xFF\xFF\x00\x01\x00\x1E\x34\x61"
+        b"\xb0\xb1\xb2\xb3\x00\x01\x01\x23\x00\x0e\x81\xa3\x24\x25\xff\x47\x64\xff\xff\x00\x01\x00\x1e\x34\x61"
     )
     await asyncio.sleep(0)
     assert light.is_on is False
@@ -449,7 +448,7 @@ async def test_turn_on_off_via_assessable_state_message(
     await asyncio.sleep(0)
     light._ignore_next_power_state_update = False
     light._aio_protocol.data_received(
-        b"\xB0\xB1\xB2\xB3\x00\x01\x01\x24\x00\x0E\x81\xA3\x23\x25\x5F\x21\x64\xFF\xFF\x00\x01\x00\x1E\x6D\xD4"
+        b"\xb0\xb1\xb2\xb3\x00\x01\x01\x24\x00\x0e\x81\xa3\x23\x25\x5f\x21\x64\xff\xff\x00\x01\x00\x1e\x6d\xd4"
     )
     await asyncio.sleep(0)
     assert light.is_on is True
@@ -596,10 +595,10 @@ async def test_async_set_effect(mock_aio_protocol, caplog: pytest.LogCaptureFixt
     task = asyncio.create_task(light.async_setup(_updated_callback))
     transport, protocol = await mock_aio_protocol()
     light._aio_protocol.data_received(
-        b"\x81\xA3#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd5"
+        b"\x81\xa3#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd5"
     )
     # ic state
-    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xA0")
+    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xa0")
     await task
     assert light.model_num == 0xA3
     assert light.dimmable_effects is True
@@ -649,12 +648,12 @@ async def test_async_set_zones(mock_aio_protocol, caplog: pytest.LogCaptureFixtu
     task = asyncio.create_task(light.async_setup(_updated_callback))
     transport, protocol = await mock_aio_protocol()
     light._aio_protocol.data_received(
-        b"\x81\xA3#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd5"
+        b"\x81\xa3#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd5"
     )
     # ic state
-    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xA0")
+    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xa0")
     # sometimes the devices responds 2x
-    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xA0")
+    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xa0")
 
     await task
     assert light._pixels_per_segment == 25
@@ -756,7 +755,7 @@ async def test_async_set_music_mode_0x08_v1_firmware(
         task = asyncio.create_task(light.async_setup(_updated_callback))
         transport, protocol = await mock_aio_protocol()
         light._aio_protocol.data_received(
-            b"\x81\x08\x23\x62\x23\x01\x80\x00\xFF\x00\x01\x00\x00\xB2"
+            b"\x81\x08\x23\x62\x23\x01\x80\x00\xff\x00\x01\x00\x00\xb2"
         )
         await task
         assert light.model_num == 0x08
@@ -786,7 +785,7 @@ async def test_async_set_music_mode_0x08_v2_firmware(
         task = asyncio.create_task(light.async_setup(_updated_callback))
         transport, protocol = await mock_aio_protocol()
         light._aio_protocol.data_received(
-            b"\x81\x08\x23\x62\x23\x01\x80\x00\xFF\x00\x02\x00\x00\xB3"
+            b"\x81\x08\x23\x62\x23\x01\x80\x00\xff\x00\x02\x00\x00\xb3"
         )
         await task
         assert light.model_num == 0x08
@@ -816,10 +815,10 @@ async def test_async_set_music_mode_a2(
     task = asyncio.create_task(light.async_setup(_updated_callback))
     transport, protocol = await mock_aio_protocol()
     light._aio_protocol.data_received(
-        b"\x81\xA2#\x62\x01\x10\x64\x00\x00\x00\x04\x00\xf0\x11"
+        b"\x81\xa2#\x62\x01\x10\x64\x00\x00\x00\x04\x00\xf0\x11"
     )
     # ic state
-    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xA0")
+    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xa0")
     await task
     assert light.model_num == 0xA2
     assert light.effect == EFFECT_MUSIC
@@ -839,7 +838,7 @@ async def test_async_set_music_mode_a2(
 
     # light is on
     light._aio_protocol.data_received(
-        b"\x81\xA2\x23\x62\x01\x10\x64\x00\x00\x00\x04\x00\xf0\x11"
+        b"\x81\xa2\x23\x62\x01\x10\x64\x00\x00\x00\x04\x00\xf0\x11"
     )
     transport.reset_mock()
     await light.async_update()
@@ -851,7 +850,7 @@ async def test_async_set_music_mode_a2(
 
     # light is off
     light._aio_protocol.data_received(
-        b"\x81\xA2\x24\x62\x01\x10\x64\x00\x00\x00\x04\x00\xf0\x12"
+        b"\x81\xa2\x24\x62\x01\x10\x64\x00\x00\x00\x04\x00\xf0\x12"
     )
     transport.reset_mock()
     await light.async_update()
@@ -875,10 +874,10 @@ async def test_async_set_music_mode_a3(
     task = asyncio.create_task(light.async_setup(_updated_callback))
     transport, protocol = await mock_aio_protocol()
     light._aio_protocol.data_received(
-        b"\x81\xA3#\x62\x01\x10\x64\x00\x00\x00\x04\x00\xf0\x12"
+        b"\x81\xa3#\x62\x01\x10\x64\x00\x00\x00\x04\x00\xf0\x12"
     )
     # ic state
-    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xA0")
+    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xa0")
     await task
     assert light.model_num == 0xA3
     assert light.effect == EFFECT_MUSIC
@@ -934,10 +933,10 @@ async def test_async_failed_callback(
     task = asyncio.create_task(light.async_setup(_updated_callback))
     transport, protocol = await mock_aio_protocol()
     light._aio_protocol.data_received(
-        b"\x81\xA3#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd5"
+        b"\x81\xa3#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd5"
     )
     # ic state
-    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xA0")
+    light._aio_protocol.data_received(b"\x00\x63\x00\x19\x00\x02\x04\x03\x19\x02\xa0")
     await task
     assert light.model_num == 0xA3
     assert light.dimmable_effects is True
@@ -1163,7 +1162,7 @@ async def test_cct_protocol_device(mock_aio_protocol):
     task = asyncio.create_task(light.async_setup(_updated_callback))
     transport, protocol = await mock_aio_protocol()
     light._aio_protocol.data_received(
-        b"\x81\x1C\x23\x61\x00\x05\x00\x64\x64\x64\x03\x64\x0F\xC8"
+        b"\x81\x1c\x23\x61\x00\x05\x00\x64\x64\x64\x03\x64\x0f\xc8"
     )
     await task
     assert light.getCCT() == (0, 255)
@@ -1171,7 +1170,7 @@ async def test_cct_protocol_device(mock_aio_protocol):
     assert light.brightness == 255
 
     light._aio_protocol.data_received(
-        b"\x81\x1C\x23\x61\x00\x05\x00\x00\x00\x00\x03\x64\x00\x8D"
+        b"\x81\x1c\x23\x61\x00\x05\x00\x00\x00\x00\x03\x64\x00\x8d"
     )
     assert light.getCCT() == (255, 0)
     assert light.color_temp == 2700
@@ -1226,7 +1225,7 @@ async def test_cct_protocol_device(mock_aio_protocol):
 
     # light is on
     light._aio_protocol.data_received(
-        b"\x81\x1C\x23\x61\x00\x05\x00\x64\x64\x64\x03\x64\x0F\xC8"
+        b"\x81\x1c\x23\x61\x00\x05\x00\x64\x64\x64\x03\x64\x0f\xc8"
     )
     assert light._last_update_time == aiodevice.NEVER_TIME
     transport.reset_mock()
@@ -1239,7 +1238,7 @@ async def test_cct_protocol_device(mock_aio_protocol):
 
     # light is off
     light._aio_protocol.data_received(
-        b"\x81\x1C\x24\x61\x00\x05\x00\x64\x64\x64\x03\x64\x0F\xC9"
+        b"\x81\x1c\x24\x61\x00\x05\x00\x64\x64\x64\x03\x64\x0f\xc9"
     )
     transport.reset_mock()
     await light.async_update()
@@ -1518,7 +1517,7 @@ async def test_async_set_power_restore_state(
         b"\x81\x97\x24\x24\x00\x00\x00\x00\x00\x00\x02\x00\x00\x62"
     )
     # power restore state
-    socket._aio_protocol.data_received(b"\x0F\x32\xF0\xF0\xF0\xF0\x01")
+    socket._aio_protocol.data_received(b"\x0f\x32\xf0\xf0\xf0\xf0\x01")
     await task
     assert socket.model_num == 0x97
     assert socket.power_restore_states == PowerRestoreStates(

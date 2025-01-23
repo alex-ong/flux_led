@@ -941,7 +941,6 @@ class ProtocolLEDENETAddressableA1(ProtocolLEDENETAddressableBase):
 
 
 class ProtocolLEDENETAddressableA2(ProtocolLEDENETAddressableBase):
-
     # ic response
     # 0x96 0x63 0x00 0x32 0x00 0x01 0x01 0x04 0x32 0x01 0x64 (11)
 
@@ -1081,7 +1080,6 @@ class ProtocolLEDENETAddressableA2(ProtocolLEDENETAddressableBase):
 
 
 class ProtocolLEDENETAddressableA3(ProtocolLEDENETAddressableA2):
-
     # ic response
     # 0x00 0x63 0x00 0x32 0x00 0x01 0x04 0x03 0x32 0x01 0xD0 (11)
     # b0 b1 b2 b3 00 01 01 37 00 0b 00 63 00 32 00 01 04 03 32 01 d0 aa
@@ -1293,7 +1291,6 @@ class ProtocolLEDENETAddressableA3(ProtocolLEDENETAddressableA2):
 
 
 class ProtocolLEDENETCCT(ProtocolLEDENET9Byte):
-
     MIN_BRIGHTNESS = 2
 
     @property

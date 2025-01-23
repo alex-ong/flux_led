@@ -431,7 +431,6 @@ class TestLight(unittest.TestCase):
     @patch("flux_led.WifiLedBulb._read_msg")
     @patch("flux_led.WifiLedBulb.connect")
     def test_rgbww_controller_version_4(self, mock_connect, mock_read, mock_send):
-
         calls = 0
 
         def read_data(expected):
@@ -575,7 +574,6 @@ class TestLight(unittest.TestCase):
     @patch("flux_led.WifiLedBulb._read_msg")
     @patch("flux_led.WifiLedBulb.connect")
     def test_rgbww_controller_version_9(self, mock_connect, mock_read, mock_send):
-
         calls = 0
 
         def read_data(expected):
@@ -719,7 +717,6 @@ class TestLight(unittest.TestCase):
     @patch("flux_led.WifiLedBulb._read_msg")
     @patch("flux_led.WifiLedBulb.connect")
     def test_rgbcw_bulb_v4(self, mock_connect, mock_read, mock_send):
-
         calls = 0
 
         def read_data(expected):
@@ -879,7 +876,7 @@ class TestLight(unittest.TestCase):
             calls += 1
             if calls == 1:
                 self.assertEqual(expected, 2)
-                return bytearray(b"\x81\x0E")
+                return bytearray(b"\x81\x0e")
             if calls == 2:
                 self.assertEqual(expected, 12)
                 return bytearray(b"\x23\x61\x07\x10\xb6\x00\x98\x00\x07\x00\xf0\x6f")
@@ -1139,7 +1136,6 @@ class TestLight(unittest.TestCase):
     @patch("flux_led.WifiLedBulb._read_msg")
     @patch("flux_led.WifiLedBulb.connect")
     def test_rgbcw_bulb_v9(self, mock_connect, mock_read, mock_send):
-
         calls = 0
 
         def read_data(expected):
@@ -1758,7 +1754,7 @@ class TestLight(unittest.TestCase):
             if calls == 3:
                 self.assertEqual(expected, 14)
                 return bytearray(
-                    b"\x81\xde\x23\x41\x47\x00\x00\x00\x00\x00\x02\xFF\x00\x0b"
+                    b"\x81\xde\x23\x41\x47\x00\x00\x00\x00\x00\x02\xff\x00\x0b"
                 )
 
         mock_read.side_effect = read_data
@@ -1953,19 +1949,19 @@ class TestLight(unittest.TestCase):
             calls += 1
             if calls == 1:
                 self.assertEqual(expected, 2)
-                return bytearray(b"\x81\xA2")
+                return bytearray(b"\x81\xa2")
             if calls == 2:
                 self.assertEqual(expected, 12)
                 return bytearray(b"#a\x41\x10\xff\x00\x00\x00\x04\x00\xf0\xeb")
             if calls == 3:
                 self.assertEqual(expected, 14)
                 return bytearray(
-                    b"\x81\xA2#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd4"
+                    b"\x81\xa2#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd4"
                 )
             if calls == 4:
                 self.assertEqual(expected, 14)
                 return bytearray(
-                    b"\x81\xA2#\x24\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd3"
+                    b"\x81\xa2#\x24\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd3"
                 )
             raise ValueError("Too many calls")
 
@@ -2048,14 +2044,14 @@ class TestLight(unittest.TestCase):
             calls += 1
             if calls == 1:
                 self.assertEqual(expected, 2)
-                return bytearray(b"\x81\xA3")
+                return bytearray(b"\x81\xa3")
             if calls == 2:
                 self.assertEqual(expected, 12)
                 return bytearray(b"#a\x41\x10\xff\x00\x00\x00\x04\x00\xf0\xec")
             if calls == 3:
                 self.assertEqual(expected, 14)
                 return bytearray(
-                    b"\x81\xA3#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd5"
+                    b"\x81\xa3#\x25\x01\x10\x64\x00\x00\x00\x04\x00\xf0\xd5"
                 )
             raise ValueError("Too many calls")
 
@@ -2147,19 +2143,19 @@ class TestLight(unittest.TestCase):
             calls += 1
             if calls == 1:
                 self.assertEqual(expected, 2)
-                return bytearray(b"\x81\xA1")
+                return bytearray(b"\x81\xa1")
             if calls == 2:
                 self.assertEqual(expected, 12)
                 return bytearray(b"#a\x41\x10\xff\x00\x00\x00\x04\x00\xf0\xea")
             if calls == 3:
                 self.assertEqual(expected, 14)
                 return bytearray(
-                    b"\x81\xA1#\x00\xa1\x01\x64\x00\x00\x00\x04\x00\xf0\x3f"
+                    b"\x81\xa1#\x00\xa1\x01\x64\x00\x00\x00\x04\x00\xf0\x3f"
                 )
             if calls == 4:
                 self.assertEqual(expected, 14)
                 return bytearray(
-                    b"\x81\xA1\x23\x00\x61\x64\x07\x00\x21\x03\x03\x01\x2C\x65"
+                    b"\x81\xa1\x23\x00\x61\x64\x07\x00\x21\x03\x03\x01\x2c\x65"
                 )
             raise ValueError("Too many calls")
 

@@ -33,9 +33,8 @@ TemperatureBrightness = namedtuple(
 class utils:
     @staticmethod
     def color_object_to_tuple(
-        color: Union[Tuple[int, ...], str]
+        color: Union[Tuple[int, ...], str],
     ) -> Optional[Tuple[int, ...]]:
-
         # see if it's already a color tuple
         if isinstance(color, tuple) and len(color) in [3, 4, 5]:
             return color
@@ -126,14 +125,14 @@ class utils:
 
 
 def rgbwc_to_rgbcw(
-    rgbwc_data: Tuple[int, int, int, int, int]
+    rgbwc_data: Tuple[int, int, int, int, int],
 ) -> Tuple[int, int, int, int, int]:
     r, g, b, w, c = rgbwc_data
     return r, g, b, c, w
 
 
 def rgbcw_to_rgbwc(
-    rgbcw_data: Tuple[int, int, int, int, int]
+    rgbcw_data: Tuple[int, int, int, int, int],
 ) -> Tuple[int, int, int, int, int]:
     r, g, b, c, w = rgbcw_data
     return r, g, b, w, c

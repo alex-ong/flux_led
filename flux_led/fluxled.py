@@ -383,7 +383,6 @@ def processCustomArgs(
 
 
 def parseArgs() -> Tuple[Values, Any]:  # noqa: C901
-
     parser = OptionParser()
 
     parser.description = "A utility to control Flux WiFi LED Bulbs. "
@@ -534,7 +533,7 @@ def parseArgs() -> Tuple[Values, Any]:  # noqa: C901
         default=None,
         help="Send raw byte packet formatted as hex string",
         metavar="HEX",
-        nargs=1
+        nargs=1,
     )
     parser.add_option_group(mode_group)
 
@@ -616,8 +615,6 @@ def parseArgs() -> Tuple[Values, Any]:  # noqa: C901
         showTimerHelp()
         sys.exit(0)
 
-    
-
     if options.listcolors:
         for c in utils.get_color_names_list():  # type: ignore
             print(f"{c}, ")
@@ -697,7 +694,6 @@ def parseArgs() -> Tuple[Values, Any]:  # noqa: C901
 
 # -------------------------------------------
 def main() -> None:  # noqa: C901
-
     (options, args) = parseArgs()
     scanner = BulbScanner()
 
@@ -722,7 +718,9 @@ def main() -> None:  # noqa: C901
         for addr in args:
             if addr in found_addrs:
                 continue
-            bulb_info_list.append(FluxLEDDiscovery({ATTR_IPADDR: addr, ATTR_ID: "Unknown ID"}))  # type: ignore
+            bulb_info_list.append(
+                FluxLEDDiscovery({ATTR_IPADDR: addr, ATTR_ID: "Unknown ID"})
+            )  # type: ignore
 
     # now we have our bulb list, perform same operation on all of them
     for info in bulb_info_list:
@@ -825,9 +823,7 @@ def main() -> None:  # noqa: C901
             )
             bulb.setPresetPattern(options.preset[0], options.preset[1])
         elif options.raw_packet is not None:
-            print(
-                "Sending raw packet:", options.raw_packet
-            )
+            print("Sending raw packet:", options.raw_packet)
             bulb.turnOn()
             byte_data = bytearray.fromhex(options.raw_packet)
             bulb._process_levels_change(byte_data, None)
@@ -862,7 +858,7 @@ def main() -> None:  # noqa: C901
             print("")
 
         if options.listpresets:
-            print (bulb.effect_dict)
+            print(bulb.effect_dict)
 
     sys.exit(0)
 

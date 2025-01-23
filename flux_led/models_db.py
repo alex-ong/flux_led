@@ -71,7 +71,9 @@ class LEDENETModel:
     model_num: int  # The model number aka byte 1
     models: List[str]  # The model names from discovery
     description: str  # Description of the model ({type} {color_mode})
-    always_writes_white_and_colors: bool  # Devices that don't require a separate rgb/w bit aka rgbwprotocol
+    always_writes_white_and_colors: (
+        bool  # Devices that don't require a separate rgb/w bit aka rgbwprotocol
+    )
     protocols: List[
         MinVersionProtocol
     ]  # The device protocols, must be ordered highest version to lowest version

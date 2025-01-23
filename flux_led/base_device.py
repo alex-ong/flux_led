@@ -186,7 +186,7 @@ class LEDENETDevice:
         self._mode: Optional[str] = None
         self._transition_complete_time: float = 0
         self._last_effect_brightness: int = 100
-        
+
     def _protocol_probes(
         self,
     ) -> Union[
@@ -402,7 +402,7 @@ class LEDENETDevice:
         elif protocol in NEW_EFFECTS_PROTOCOLS:
             return ADDRESSABLE_EFFECT_ID_NAME.values()
         elif protocol in CHRISTMAS_EFFECTS_PROTOCOLS:
-            return CHRISTMAS_ADDRESSABLE_EFFECT_ID_NAME.values()    
+            return CHRISTMAS_ADDRESSABLE_EFFECT_ID_NAME.values()
         elif COLOR_MODES_RGB.intersection(self.color_modes):
             effects = EFFECT_LIST if self.requires_turn_on else EFFECT_LIST_AUTO_ON
         if self.microphone:
@@ -547,9 +547,9 @@ class LEDENETDevice:
             )
             return False
 
-        raw_state: Union[
-            LEDENETOriginalRawState, LEDENETRawState
-        ] = self._protocol.named_raw_state(rx)
+        raw_state: Union[LEDENETOriginalRawState, LEDENETRawState] = (
+            self._protocol.named_raw_state(rx)
+        )
         _LOGGER.debug("%s: State: %s", self.ipaddr, raw_state)
 
         if raw_state != self.raw_state:
@@ -968,7 +968,6 @@ class LEDENETDevice:
         version_num = full_msg[10] if len(full_msg) > 10 else 1
         self.setProtocol(self._model_data.protocol_for_version_num(version_num))
 
-   
     def _generate_preset_pattern(
         self, pattern: int, speed: int, brightness: int
     ) -> bytearray:
